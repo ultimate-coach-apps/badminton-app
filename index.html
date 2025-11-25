@@ -5,616 +5,617 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Badi-Plan Ultimate + Line</title>
 
-<link rel="apple-touch-icon" href="pct903-Badminton.jpg">
-<link rel="icon" type="image/png" href="pct903-Badminton.jpg">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-    /* ...ここから下にスタイル設定が続きます... */
+/* ...ここから下にスタイル設定が続きます... */
 
-    /* --- 基本設定 --- */
-    body { margin: 0; padding: 0; background: #222; color: white; font-family: -apple-system, sans-serif; padding-bottom: 80px; }
-    button { cursor: pointer; border: none; border-radius: 4px; font-weight: bold; color: white; touch-action: manipulation;}
-    input, select { padding: 8px; border-radius: 4px; border: 1px solid #555; background: #333; color: white; }
+/* --- 基本設定 --- */
+body { margin: 0; padding: 0; background: #222; color: white; font-family: -apple-system, sans-serif; padding-bottom: 80px; }
+button { cursor: pointer; border: none; border-radius: 4px; font-weight: bold; color: white; touch-action: manipulation;}
+input, select { padding: 8px; border-radius: 4px; border: 1px solid #555; background: #333; color: white; }
 
-    /* --- タイムライン画面 --- */
-    #screen-plan { display: block; padding: 15px; }
-    .timeline-header { position: sticky; top: 0; background: #222; z-index: 10; padding-bottom: 10px; border-bottom: 1px solid #444; }
-    .header-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .app-title { font-size: 18px; margin: 0; font-weight: bold; }
-    
-    .btn-analytics { background: #6f42c1; padding: 5px 15px; font-size: 12px; display: flex; align-items: center; gap: 5px; }
-    .btn-share-line { background: #06C755; padding: 5px 15px; font-size: 12px; margin-left: 5px; }
+/* --- タイムライン画面 --- */
+#screen-plan { display: block; padding: 15px; }
+.timeline-header { position: sticky; top: 0; background: #222; z-index: 10; padding-bottom: 10px; border-bottom: 1px solid #444; }
+.header-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.app-title { font-size: 18px; margin: 0; font-weight: bold; }
 
-    .total-info { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; color: #aaa; }
-    .intensity-bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: #444; margin-bottom: 15px; }
-    .ibar-seg { height: 100%; transition: width 0.3s; }
-    
-    .type-phys { background-color: #ff4d4d; color: white; } 
-    .type-tech { background-color: #007AFF; color: white; } 
-    .type-tac  { background-color: #28a745; color: white; } 
-    .type-game { background-color: #ffc107; color: black; } 
-    .type-rest { background-color: #6c757d; color: white; } 
+.btn-analytics { background: #6f42c1; padding: 5px 15px; font-size: 12px; display: flex; align-items: center; gap: 5px; }
+.btn-share-line { background: #06C755; padding: 5px 15px; font-size: 12px; margin-left: 5px; }
 
-    .block-list { margin-top: 10px; }
-    .plan-block {
-        background: #333; margin-bottom: 10px; border-radius: 8px; padding: 10px;
-        display: flex; align-items: center; border-left: 8px solid #666; position: relative;
-    }
-    .block-time { font-size: 18px; font-weight: bold; width: 60px; text-align: center; margin-right: 10px; }
-    .block-info { flex-grow: 1; }
-    .block-title { font-size: 16px; font-weight: bold; display: block; }
-    .block-type { font-size: 10px; opacity: 0.8; padding: 2px 6px; border-radius: 4px; margin-left: 5px; }
-    
-    .btn-board-link { background: #555; font-size: 12px; padding: 5px 10px; margin-top: 5px; }
-    .btn-board-link.has-data { background: #28a745; }
-    .btn-save-lib { background: #fd7e14; font-size: 10px; padding: 3px 6px; margin-left:5px; border-radius:3px; }
-    
-    .block-ctrls { display: flex; flex-direction: column; gap: 5px; margin-left: 10px; }
-    .btn-del { background: #dc3545; padding: 5px 10px; font-size: 12px; }
-    .btn-up, .btn-down { background: #444; color: #aaa; font-size: 10px; padding: 4px; }
+.total-info { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; color: #aaa; }
+.intensity-bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: #444; margin-bottom: 15px; }
+.ibar-seg { height: 100%; transition: width 0.3s; }
 
-    #add-area { background: #333; padding: 15px; border-radius: 8px; margin-top: 20px; }
-    .add-row { display: flex; gap: 10px; margin-bottom: 10px; }
-    .btn-add { background: #007AFF; width: 100%; padding: 12px; font-size: 16px; }
+.type-phys { background-color: #ff4d4d; color: white; } 
+.type-tech { background-color: #007AFF; color: white; } 
+.type-tac  { background-color: #28a745; color: white; } 
+.type-game { background-color: #ffc107; color: black; } 
+.type-rest { background-color: #6c757d; color: white; } 
 
-    .footer-actions { margin-top: 30px; display: flex; justify-content: center; }
-    .btn-complete { background: linear-gradient(135deg, #28a745, #218838); padding: 15px 40px; font-size: 16px; box-shadow: 0 4px 15px rgba(40,167,69,0.4); }
+.block-list { margin-top: 10px; }
+.plan-block {
+background: #333; margin-bottom: 10px; border-radius: 8px; padding: 10px;
+display: flex; align-items: center; border-left: 8px solid #666; position: relative;
+}
+.block-time { font-size: 18px; font-weight: bold; width: 60px; text-align: center; margin-right: 10px; }
+.block-info { flex-grow: 1; }
+.block-title { font-size: 16px; font-weight: bold; display: block; }
+.block-type { font-size: 10px; opacity: 0.8; padding: 2px 6px; border-radius: 4px; margin-left: 5px; }
 
-    /* --- ライブラリ画面 --- */
-    .lib-item { background: #333; border-radius: 6px; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #555; }
-    .lib-info { font-size: 14px; }
-    .lib-title { font-weight: bold; display: block; font-size:16px; }
-    .lib-actions { display:flex; gap:10px; }
-    .btn-use { background: #28a745; padding: 5px 10px; font-size: 12px; }
-    .btn-del-lib { background: #dc3545; padding: 5px 10px; font-size: 12px; }
+.btn-board-link { background: #555; font-size: 12px; padding: 5px 10px; margin-top: 5px; }
+.btn-board-link.has-data { background: #28a745; }
+.btn-save-lib { background: #fd7e14; font-size: 10px; padding: 3px 6px; margin-left:5px; border-radius:3px; }
 
-    /* --- 作戦ボード画面 --- */
-    #screen-board { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2e8b57; z-index: 50; display: none; touch-action: none; }
-    #top-bar { position: absolute; top: 0; left: 0; right: 0; height: 50px; background: rgba(0,0,0,0.9); display: flex; align-items: center; padding: 0 10px; justify-content: space-between; z-index: 100; }
-    .btn-back { background: #666; padding: 8px 15px; font-size: 12px; }
-    #board-title { font-size: 16px; font-weight: bold; color: #fff; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; max-width: 120px;}
-    .top-actions { display: flex; gap: 5px; }
-    .btn-save { background: #007AFF; padding: 8px 15px; font-size: 12px;}
-    .btn-share-img { background: #06C755; padding: 8px 15px; font-size: 12px; }
+.block-ctrls { display: flex; flex-direction: column; gap: 5px; margin-left: 10px; }
+.btn-del { background: #dc3545; padding: 5px 10px; font-size: 12px; }
+.btn-up, .btn-down { background: #444; color: #aaa; font-size: 10px; padding: 4px; }
 
-    #controls { position: absolute; bottom: 0; left: 0; right: 0; height: 130px; background: rgba(0,0,0,0.9); padding: 5px; z-index: 100; display: flex; flex-direction: column; justify-content: center; }
-    #edit-controls { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-top: 5px; align-items: center; }
-    .ctrl-btn { background: #555; padding: 8px 8px; font-size: 12px; border: 1px solid #777; min-width: 36px;}
-    
-    /* ツールモードのスタイル */
-    .mode-toggle { border: 2px solid #fff; font-weight: bold; }
-    .mode-move.active { background: #007AFF; } 
-    .mode-pen.active { background: #ffc107; color: black; }
-    /* 矢印ボタンのスタイル */
-    .mode-arrow-shot { color: #ffeb3b; }
-    .mode-arrow-shot.active { background: #ffeb3b; color: black; }
-    .mode-arrow-move { color: #007AFF; }
-    .mode-arrow-move.active { background: #007AFF; color: white; }
+#add-area { background: #333; padding: 15px; border-radius: 8px; margin-top: 20px; }
+.add-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.btn-add { background: #007AFF; width: 100%; padding: 12px; font-size: 16px; }
 
-    #action-area { display: flex; justify-content: center; align-items: center; margin-bottom: 5px;}
-    .btn-rec { background: #d32f2f; padding: 8px 25px; width: 120px; font-size: 14px;}
-    .btn-rec.recording { background: #ff0000; animation: pulse 1s infinite; }
-    .btn-play { background: #28a745; padding: 8px 30px; font-size: 14px; display: none;}
-    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+.footer-actions { margin-top: 30px; display: flex; justify-content: center; }
+.btn-complete { background: linear-gradient(135deg, #28a745, #218838); padding: 15px 40px; font-size: 16px; box-shadow: 0 4px 15px rgba(40,167,69,0.4); }
 
-    #svg-container { position: absolute; top: 50px; bottom: 130px; left: 0; right: 0; }
-    svg { width: 100%; height: 100%; }
-    
-    /* SVG内スタイル定義 */
-    .court-line { stroke: white; stroke-width: 2; fill: none; }
-    .draw-path { stroke: #ffeb3b; stroke-width: 4; fill: none; stroke-linecap: round; opacity: 0.8; }
-    .arrow-line { stroke-width: 4; fill: none; opacity: 0.9; }
-    .arrow-shot { stroke: #ffeb3b; marker-end: url(#arrowhead-shot); }
-    .arrow-move { stroke: #007AFF; stroke-dasharray: 10,10; marker-end: url(#arrowhead-move); }
+/* --- ライブラリ画面 --- */
+.lib-item { background: #333; border-radius: 6px; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #555; }
+.lib-info { font-size: 14px; }
+.lib-title { font-weight: bold; display: block; font-size:16px; }
+.lib-actions { display:flex; gap:10px; }
+.btn-use { background: #28a745; padding: 5px 10px; font-size: 12px; }
+.btn-del-lib { background: #dc3545; padding: 5px 10px; font-size: 12px; }
 
-    #screen-analytics { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a1a1a; z-index: 200; display: none; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-    .chart-container { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 20px; height: 300px; position: relative; }
+/* --- 作戦ボード画面 --- */
+#screen-board { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2e8b57; z-index: 50; display: none; touch-action: none; }
+#top-bar { position: absolute; top: 0; left: 0; right: 0; height: 50px; background: rgba(0,0,0,0.9); display: flex; align-items: center; padding: 0 10px; justify-content: space-between; z-index: 100; }
+.btn-back { background: #666; padding: 8px 15px; font-size: 12px; }
+#board-title { font-size: 16px; font-weight: bold; color: #fff; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; max-width: 120px;}
+.top-actions { display: flex; gap: 5px; }
+.btn-save { background: #007AFF; padding: 8px 15px; font-size: 12px;}
+.btn-share-img { background: #06C755; padding: 8px 15px; font-size: 12px; }
 
-    /* プレゼンモード用 */
-    body.presentation-mode #top-bar,
-    body.presentation-mode #controls { display: none !important; }
-    #exit-presentation { display: none; position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.5); color: white; padding: 10px 20px; border-radius: 20px; z-index: 9999; font-size: 14px; }
-    body.presentation-mode #exit-presentation { display: block; }
-    body.presentation-mode #svg-container { top:0; bottom:0; }
+#controls { position: absolute; bottom: 0; left: 0; right: 0; height: 130px; background: rgba(0,0,0,0.9); padding: 5px; z-index: 100; display: flex; flex-direction: column; justify-content: center; }
+#edit-controls { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-top: 5px; align-items: center; }
+.ctrl-btn { background: #555; padding: 8px 8px; font-size: 12px; border: 1px solid #777; min-width: 36px;}
+
+/* ツールモードのスタイル */
+.mode-toggle { border: 2px solid #fff; font-weight: bold; }
+.mode-move.active { background: #007AFF; } 
+.mode-pen.active { background: #ffc107; color: black; }
+/* 矢印ボタンのスタイル */
+.mode-arrow-shot { color: #ffeb3b; }
+.mode-arrow-shot.active { background: #ffeb3b; color: black; }
+.mode-arrow-move { color: #007AFF; }
+.mode-arrow-move.active { background: #007AFF; color: white; }
+
+#action-area { display: flex; justify-content: center; align-items: center; margin-bottom: 5px;}
+.btn-rec { background: #d32f2f; padding: 8px 25px; width: 120px; font-size: 14px;}
+.btn-rec.recording { background: #ff0000; animation: pulse 1s infinite; }
+.btn-play { background: #28a745; padding: 8px 30px; font-size: 14px; display: none;}
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+#svg-container { position: absolute; top: 50px; bottom: 130px; left: 0; right: 0; }
+svg { width: 100%; height: 100%; }
+
+/* SVG内スタイル定義 */
+.court-line { stroke: white; stroke-width: 2; fill: none; }
+.draw-path { stroke: #ffeb3b; stroke-width: 4; fill: none; stroke-linecap: round; opacity: 0.8; }
+.arrow-line { stroke-width: 4; fill: none; opacity: 0.9; }
+.arrow-shot { stroke: #ffeb3b; marker-end: url(#arrowhead-shot); }
+.arrow-move { stroke: #007AFF; stroke-dasharray: 10,10; marker-end: url(#arrowhead-move); }
+
+#screen-analytics { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a1a1a; z-index: 200; display: none; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+.chart-container { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 20px; height: 300px; position: relative; }
+
+/* プレゼンモード用 */
+body.presentation-mode #top-bar,
+body.presentation-mode #controls { display: none !important; }
+#exit-presentation { display: none; position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.5); color: white; padding: 10px 20px; border-radius: 20px; z-index: 9999; font-size: 14px; }
+body.presentation-mode #exit-presentation { display: block; }
+body.presentation-mode #svg-container { top:0; bottom:0; }
 </style>
 </head>
 <body>
 <button id="exit-presentation" onclick="togglePresentation()">× 表示を戻す</button>
 
 <div id="screen-plan">
-    <div class="timeline-header">
-        <div class="header-top-row">
-            <h2 class="app-title">Badi-Plan Manager</h2>
-            <div style="display:flex;">
-                <button class="btn-analytics" onclick="openAnalytics()">📊 分析</button>
-                <button class="btn-share-line" onclick="sharePlanText()">LINE共有</button>
-            </div>
-        </div>
-        <div class="total-info">
-            <span>Total: <span id="total-time">0</span> min</span>
-            <button onclick="clearAllBlocks()" style="background:none; color:#dc3545; font-size:12px;">Reset</button>
-        </div>
-        <div class="intensity-bar" id="intensity-bar">
-            <div class="ibar-seg type-phys" style="width:0%"></div>
-            <div class="ibar-seg type-tech" style="width:0%"></div>
-            <div class="ibar-seg type-tac" style="width:0%"></div>
-            <div class="ibar-seg type-game" style="width:0%"></div>
-        </div>
-    </div>
+<div class="timeline-header">
+<div class="header-top-row">
+<h2 class="app-title">Badi-Plan Manager</h2>
+<div style="display:flex;">
+<button class="btn-analytics" onclick="openAnalytics()">📊 分析</button>
+<button class="btn-share-line" onclick="sharePlanText()">LINE共有</button>
+</div>
+</div>
+<div class="total-info">
+<span>Total: <span id="total-time">0</span> min</span>
+<button onclick="clearAllBlocks()" style="background:none; color:#dc3545; font-size:12px;">Reset</button>
+</div>
+<div class="intensity-bar" id="intensity-bar">
+<div class="ibar-seg type-phys" style="width:0%"></div>
+<div class="ibar-seg type-tech" style="width:0%"></div>
+<div class="ibar-seg type-tac" style="width:0%"></div>
+<div class="ibar-seg type-game" style="width:0%"></div>
+</div>
+</div>
 
-    <div id="block-container" class="block-list"></div>
+<div id="block-container" class="block-list"></div>
 
-    <div id="add-area">
-        <div style="color:#aaa; font-size:12px; margin-bottom:5px;">メニューを追加</div>
-        <div class="add-row">
-            <input type="text" id="inp-title" placeholder="例: フットワーク" style="flex-grow:1;">
-            <input type="number" id="inp-time" value="15" style="width:50px;">分
-        </div>
-        <div class="add-row">
-            <select id="inp-type" style="width:100%;">
-                <option value="phys">フィジカル (赤)</option>
-                <option value="tech">技術練習 (青)</option>
-                <option value="tac">戦術/パターン (緑)</option>
-                <option value="game">ゲーム (黄)</option>
-                <option value="rest">休憩/MTG (灰)</option>
-            </select>
-        </div>
-        <button class="btn-add" onclick="addBlock()">＋ 追加する</button>
-        
-        <div style="margin-top:10px; border-top:1px solid #555; padding-top:10px;">
-            <button onclick="openLibrary()" style="background:#17a2b8; width:100%; padding:10px;">📚 ライブラリから選択して追加</button>
-        </div>
-    </div>
+<div id="add-area">
+<div style="color:#aaa; font-size:12px; margin-bottom:5px;">メニューを追加</div>
+<div class="add-row">
+<input type="text" id="inp-title" placeholder="例: フットワーク" style="flex-grow:1;">
+<input type="number" id="inp-time" value="15" style="width:50px;">分
+</div>
+<div class="add-row">
+<select id="inp-type" style="width:100%;">
+<option value="phys">フィジカル (赤)</option>
+<option value="tech">技術練習 (青)</option>
+<option value="tac">戦術/パターン (緑)</option>
+<option value="game">ゲーム (黄)</option>
+<option value="rest">休憩/MTG (灰)</option>
+</select>
+</div>
+<button class="btn-add" onclick="addBlock()">＋ 追加する</button>
 
-    <div class="footer-actions">
-        <button class="btn-complete" onclick="finishPractice()">✔ 今日の練習を完了して記録</button>
-    </div>
+<div style="margin-top:10px; border-top:1px solid #555; padding-top:10px;">
+<button onclick="openLibrary()" style="background:#17a2b8; width:100%; padding:10px;">📚 ライブラリから選択して追加</button>
+</div>
+</div>
 
-    <div style="margin-top: 30px; padding: 15px; background: #444; border-radius: 8px; text-align: center;">
-        <h4 style="margin-top: 0; font-size: 14px; color: #ccc;">📂 データのバックアップ・移行</h4>
-        <div style="display: flex; gap: 10px; justify-content: center;">
-            <button onclick="exportData()" style="background:#17a2b8; padding:8px 15px; font-size:12px;">↓ ファイルに保存</button>
-            <input type="file" id="file-input" style="display:none" onchange="importData(this)">
-            <button onclick="document.getElementById('file-input').click()" style="background:#e0a800; padding:8px 15px; font-size:12px; color:black;">↑ ファイルから復元</button>
-        </div>
-    </div>
+<div class="footer-actions">
+<button class="btn-complete" onclick="finishPractice()">✔ 今日の練習を完了して記録</button>
+</div>
+
+<div style="margin-top: 30px; padding: 15px; background: #444; border-radius: 8px; text-align: center;">
+<h4 style="margin-top: 0; font-size: 14px; color: #ccc;">📂 データのバックアップ・移行</h4>
+<div style="display: flex; gap: 10px; justify-content: center;">
+<button onclick="exportData()" style="background:#17a2b8; padding:8px 15px; font-size:12px;">↓ ファイルに保存</button>
+<input type="file" id="file-input" style="display:none" onchange="importData(this)">
+<button onclick="document.getElementById('file-input').click()" style="background:#e0a800; padding:8px 15px; font-size:12px; color:black;">↑ ファイルから復元</button>
+</div>
+</div>
 </div>
 
 <div id="screen-analytics">
-    <button onclick="closeAnalytics()" style="background:#666; width:100%; padding:15px; margin-bottom:20px;">× 閉じる</button>
-    <div class="chart-container">
-        <div style="text-align:center; color:#aaa; font-size:14px;">【短期】今日の練習バランス</div>
-        <canvas id="chart-short"></canvas>
-    </div>
-    <div class="chart-container">
-        <div style="text-align:center; color:#aaa; font-size:14px;">【長期】シーズン推移（過去履歴）</div>
-        <canvas id="chart-long"></canvas>
-    </div>
+<button onclick="closeAnalytics()" style="background:#666; width:100%; padding:15px; margin-bottom:20px;">× 閉じる</button>
+<div class="chart-container">
+<div style="text-align:center; color:#aaa; font-size:14px;">【短期】今日の練習バランス</div>
+<canvas id="chart-short"></canvas>
+</div>
+<div class="chart-container">
+<div style="text-align:center; color:#aaa; font-size:14px;">【長期】シーズン推移（過去履歴）</div>
+<canvas id="chart-long"></canvas>
+</div>
 </div>
 
 <div id="screen-library" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#222; z-index:150; overflow-y:auto;">
-    <div class="timeline-header">
-        <div class="header-top-row" style="padding:10px;">
-            <h2 class="app-title">📚 練習メニューライブラリ</h2>
-            <button onclick="closeLibrary()" style="background:#666; padding:5px 10px; font-size:12px;">× 閉じる</button>
-        </div>
-        <div style="padding:0 15px 10px; display:flex; gap:5px;">
-            <input type="text" id="lib-search" placeholder="キーワード検索..." style="flex-grow:1;" oninput="renderLibraryList()">
-            <select id="lib-filter" onchange="renderLibraryList()" style="width:100px;">
-                <option value="all">全て</option>
-                <option value="phys">フィジカル</option>
-                <option value="tech">技術</option>
-                <option value="tac">戦術</option>
-                <option value="game">ゲーム</option>
-            </select>
-        </div>
-    </div>
-    <div id="library-container" style="padding:15px; padding-bottom:80px;"></div>
+<div class="timeline-header">
+<div class="header-top-row" style="padding:10px;">
+<h2 class="app-title">📚 練習メニューライブラリ</h2>
+<button onclick="closeLibrary()" style="background:#666; padding:5px 10px; font-size:12px;">× 閉じる</button>
+</div>
+<div style="padding:0 15px 10px; display:flex; gap:5px;">
+<input type="text" id="lib-search" placeholder="キーワード検索..." style="flex-grow:1;" oninput="renderLibraryList()">
+<select id="lib-filter" onchange="renderLibraryList()" style="width:100px;">
+<option value="all">全て</option>
+<option value="phys">フィジカル</option>
+<option value="tech">技術</option>
+<option value="tac">戦術</option>
+<option value="game">ゲーム</option>
+</select>
+</div>
+</div>
+<div id="library-container" style="padding:15px; padding-bottom:80px;"></div>
 </div>
 
 <div id="screen-board">
-    <div id="top-bar">
-        <button class="btn-back" onclick="closeBoard()">＜ 戻る</button>
-        <span id="board-title">作戦ボード</span>
-        <div class="top-actions">
-            <button class="btn-share-img" onclick="shareBoardImage()">LINE共有</button>
-            <button class="btn-save" onclick="saveBoardData()">保存</button>
-        </div>
-    </div>
-    <div id="svg-container">
-        <svg id="court-svg" viewBox="0 0 1340 610" preserveAspectRatio="xMidYMid meet">
-            <defs>
-                <marker id="arrowhead-shot" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                    <polygon points="0 0, 10 3.5, 0 7" fill="#ffeb3b" />
-                </marker>
-                <marker id="arrowhead-move" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                    <polygon points="0 0, 10 3.5, 0 7" fill="#007AFF" />
-                </marker>
-            </defs>
-            <style>
-                /* SVG内スタイル（画像化用） */
-                .court-line { stroke: white; stroke-width: 2; fill: none; }
-                .draw-path { stroke: #ffeb3b; stroke-width: 4; fill: none; stroke-linecap: round; opacity: 0.8; }
-                .arrow-line { stroke-width: 4; fill: none; opacity: 0.9; }
-                .arrow-shot { stroke: #ffeb3b; marker-end: url(#arrowhead-shot); }
-                .arrow-move { stroke: #007AFF; stroke-dasharray: 10,10; marker-end: url(#arrowhead-move); }
-                text { font-family: sans-serif; }
-            </style>
-            <rect width="1340" height="610" fill="#2e8b57" />
-            <g id="lines">
-                <rect width="1340" height="610" class="court-line" />
-                <line x1="670" y1="0" x2="670" y2="610" stroke="#ddd" stroke-dasharray="5,5" stroke-width="2" />
-                <line x1="472" y1="0" x2="472" y2="610" class="court-line" />
-                <line x1="868" y1="0" x2="868" y2="610" class="court-line" />
-                <line x1="0" y1="305" x2="472" y2="305" class="court-line" />
-                <line x1="868" y1="305" x2="1340" y2="305" class="court-line" />
-                <line x1="76" y1="0" x2="76" y2="610" class="court-line" />
-                <line x1="1264" y1="0" x2="1264" y2="610" class="court-line" />
-                <g id="alleys"><rect x="0" y="0" width="1340" height="46" class="court-line" /><rect x="0" y="564" width="1340" height="46" class="court-line" /></g>
-            </g>
-            <g id="drawings"></g>
-            <g id="objects"></g>
-        </svg>
-    </div>
-    <div id="controls">
-        <div id="action-area">
-            <button id="btn-rec" class="btn-rec" onclick="toggleRec()">● 動きを録画</button>
-            <button id="btn-play" class="btn-play" onclick="playRec()">▶ 再生</button>
-            <button onclick="togglePresentation()" style="background:#6f42c1; padding:8px 15px; font-size:12px; margin-left:5px;">🎥 収録モード</button>
-            <span id="timer" style="color:white; font-size:12px; margin-left:10px; width:40px;"></span>
-        </div>
-        <div id="edit-controls">
-            <button id="btn-mode-move" class="ctrl-btn mode-toggle mode-move active" onclick="setToolMode('move')">移動</button>
-            <button id="btn-mode-pen" class="ctrl-btn mode-toggle mode-pen" onclick="setToolMode('pen')">🖊ペン</button>
-            <button id="btn-mode-arrow-shot" class="ctrl-btn mode-toggle mode-arrow-shot" onclick="setToolMode('arrow-shot')">➡打</button>
-            <button id="btn-mode-arrow-move" class="ctrl-btn mode-toggle mode-arrow-move" onclick="setToolMode('arrow-move')">➡動</button>
-            
-            <div style="width:5px"></div>
-            
-            <button class="ctrl-btn" onclick="addPlayer()">＋人</button>
-            <button class="ctrl-btn" onclick="addShuttle()">＋球</button>
-            <button class="ctrl-btn" onclick="clearDrawings()">線消</button>
-            <button class="ctrl-btn" style="background:#d9534f;" onclick="clearObjects()">全消</button>
-        </div>
-    </div>
+<div id="top-bar">
+<button class="btn-back" onclick="closeBoard()">＜ 戻る</button>
+<span id="board-title">作戦ボード</span>
+<div class="top-actions">
+<button class="btn-share-img" onclick="shareBoardImage()">LINE共有</button>
+<button class="btn-save" onclick="saveBoardData()">保存</button>
+</div>
+</div>
+<div id="svg-container">
+<svg id="court-svg" viewBox="0 0 1340 610" preserveAspectRatio="xMidYMid meet">
+<defs>
+<marker id="arrowhead-shot" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+<polygon points="0 0, 10 3.5, 0 7" fill="#ffeb3b" />
+</marker>
+<marker id="arrowhead-move" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+<polygon points="0 0, 10 3.5, 0 7" fill="#007AFF" />
+</marker>
+</defs>
+<style>
+/* SVG内スタイル（画像化用） */
+.court-line { stroke: white; stroke-width: 2; fill: none; }
+.draw-path { stroke: #ffeb3b; stroke-width: 4; fill: none; stroke-linecap: round; opacity: 0.8; }
+.arrow-line { stroke-width: 4; fill: none; opacity: 0.9; }
+.arrow-shot { stroke: #ffeb3b; marker-end: url(#arrowhead-shot); }
+.arrow-move { stroke: #007AFF; stroke-dasharray: 10,10; marker-end: url(#arrowhead-move); }
+text { font-family: sans-serif; }
+</style>
+<rect width="1340" height="610" fill="#2e8b57" />
+<g id="lines">
+<rect width="1340" height="610" class="court-line" />
+<line x1="670" y1="0" x2="670" y2="610" stroke="#ddd" stroke-dasharray="5,5" stroke-width="2" />
+<line x1="472" y1="0" x2="472" y2="610" class="court-line" />
+<line x1="868" y1="0" x2="868" y2="610" class="court-line" />
+<line x1="0" y1="305" x2="472" y2="305" class="court-line" />
+<line x1="868" y1="305" x2="1340" y2="305" class="court-line" />
+<line x1="76" y1="0" x2="76" y2="610" class="court-line" />
+<line x1="1264" y1="0" x2="1264" y2="610" class="court-line" />
+<g id="alleys"><rect x="0" y="0" width="1340" height="46" class="court-line" /><rect x="0" y="564" width="1340" height="46" class="court-line" /></g>
+</g>
+<g id="drawings"></g>
+<g id="objects"></g>
+</svg>
+</div>
+<div id="controls">
+<div id="action-area">
+<button id="btn-rec" class="btn-rec" onclick="toggleRec()">● 動きを録画</button>
+<button id="btn-play" class="btn-play" onclick="playRec()">▶ 再生</button>
+<button onclick="togglePresentation()" style="background:#6f42c1; padding:8px 15px; font-size:12px; margin-left:5px;">🎥 収録モード</button>
+<span id="timer" style="color:white; font-size:12px; margin-left:10px; width:40px;"></span>
+</div>
+<div id="edit-controls">
+<button id="btn-mode-move" class="ctrl-btn mode-toggle mode-move active" onclick="setToolMode('move')">移動</button>
+<button id="btn-mode-pen" class="ctrl-btn mode-toggle mode-pen" onclick="setToolMode('pen')">🖊ペン</button>
+<button id="btn-mode-arrow-shot" class="ctrl-btn mode-toggle mode-arrow-shot" onclick="setToolMode('arrow-shot')">➡打</button>
+<button id="btn-mode-arrow-move" class="ctrl-btn mode-toggle mode-arrow-move" onclick="setToolMode('arrow-move')">➡動</button>
+
+<div style="width:5px"></div>
+
+<button class="ctrl-btn" onclick="addPlayer()">＋人</button>
+<button class="ctrl-btn" onclick="addShuttle()">＋球</button>
+<button class="ctrl-btn" onclick="clearDrawings()">線消</button>
+<button class="ctrl-btn" style="background:#d9534f;" onclick="clearObjects()">全消</button>
+</div>
+</div>
 </div>
 <script>
-    // --- データ管理設定 ---
-    const KEY_BLOCKS = 'badi_plan_blocks_v3';
-    const KEY_HISTORY = 'badi_plan_history_v3';
-    const KEY_LIBRARY = 'badi_plan_library_v3';
-    
-    let blockList = [];
-    let historyList = [];
-    let libraryList = [];
-    let currentBlockIndex = -1;
+// --- データ管理設定 ---
+const KEY_BLOCKS = 'badi_plan_blocks_v3';
+const KEY_HISTORY = 'badi_plan_history_v3';
+const KEY_LIBRARY = 'badi_plan_library_v3';
 
-    // 初期化処理
-    window.onload = () => {
-        try {
-            const saved = localStorage.getItem(KEY_BLOCKS);
-            if(saved) blockList = JSON.parse(saved);
-            
-            const savedHist = localStorage.getItem(KEY_HISTORY);
-            if(savedHist) historyList = JSON.parse(savedHist);
-            else generateDummyHistory(); 
+let blockList = [];
+let historyList = [];
+let libraryList = [];
+let currentBlockIndex = -1;
 
-            const savedLib = localStorage.getItem(KEY_LIBRARY);
-            if(savedLib) libraryList = JSON.parse(savedLib);
-        } catch(e) {}
-        renderTimeline();
-    };
+// 初期化処理
+window.onload = () => {
+try {
+const saved = localStorage.getItem(KEY_BLOCKS);
+if(saved) blockList = JSON.parse(saved);
 
-    function saveBlocks() { localStorage.setItem(KEY_BLOCKS, JSON.stringify(blockList)); renderTimeline(); }
-    
-    function generateDummyHistory() {
-        const dummy = [];
-        for(let i=8; i>=1; i--) { dummy.push({ date: `過去${i}週`, summary: { phys:Math.random()*40+20, tech:Math.random()*40+20, tac:10, game:10 }}); }
-        historyList = dummy; localStorage.setItem(KEY_HISTORY, JSON.stringify(historyList));
-    }
+const savedHist = localStorage.getItem(KEY_HISTORY);
+if(savedHist) historyList = JSON.parse(savedHist);
+else generateDummyHistory(); 
 
-    // --- タイムライン操作 ---
-    function addBlock() {
-        const title = document.getElementById('inp-title').value || "メニュー";
-        const time = parseInt(document.getElementById('inp-time').value) || 15;
-        const type = document.getElementById('inp-type').value;
-        blockList.push({ id: Date.now(), title: title, time: time, type: type, boardData: null });
-        saveBlocks();
-    }
-    function removeBlock(idx) { if(confirm("削除しますか？")) { blockList.splice(idx, 1); saveBlocks(); } }
-    function moveBlock(idx, dir) {
-        if((idx===0 && dir===-1) || (idx===blockList.length-1 && dir===1)) return;
-        const temp = blockList[idx]; blockList[idx] = blockList[idx+dir]; blockList[idx+dir] = temp; saveBlocks();
-    }
-    function clearAllBlocks() { if(confirm("リセットしますか？")) { blockList = []; saveBlocks(); } }
+const savedLib = localStorage.getItem(KEY_LIBRARY);
+if(savedLib) libraryList = JSON.parse(savedLib);
+} catch(e) {}
+renderTimeline();
+};
 
-    function renderTimeline() {
-        const container = document.getElementById('block-container');
-        const bar = document.getElementById('intensity-bar');
-        const totalDisplay = document.getElementById('total-time');
-        container.innerHTML = '';
-        let totalTime = 0; let typeTime = { phys:0, tech:0, tac:0, game:0, rest:0 };
+function saveBlocks() { localStorage.setItem(KEY_BLOCKS, JSON.stringify(blockList)); renderTimeline(); }
 
-        blockList.forEach((block, idx) => {
-            totalTime += block.time;
-            if(typeTime[block.type] !== undefined) typeTime[block.type] += block.time;
-            const hasData = block.boardData && Object.keys(block.boardData.data).length > 0;
-            
-            const div = document.createElement('div');
-            div.className = `plan-block type-${block.type}`;
-            div.style.borderColor = getComputedStyle(document.querySelector(`.type-${block.type}`)).backgroundColor;
-            div.innerHTML = `
-                <div class="block-time">${block.time}<span style="font-size:10px">min</span></div>
-                <div class="block-info">
-                    <span class="block-title">${block.title}<span class="block-type">${getTypeName(block.type)}</span>
-                    <button class="btn-save-lib" onclick="saveToLibrary(${idx})">💾 保存</button></span>
-                    <button class="btn-board-link ${hasData ? 'has-data' : ''}" onclick="openBlockBoard(${idx})">${hasData ? '★ ボード確認' : '＋ 作戦ボード作成'}</button>
-                </div>
-                <div class="block-ctrls"><button class="btn-up" onclick="moveBlock(${idx}, -1)">▲</button><button class="btn-down" onclick="moveBlock(${idx}, 1)">▼</button><button class="btn-del" onclick="removeBlock(${idx})">×</button></div>`;
-            container.appendChild(div);
-        });
-        totalDisplay.innerText = totalTime;
-        if(totalTime > 0) {
-            bar.children[0].style.width = (typeTime.phys / totalTime * 100) + "%";
-            bar.children[1].style.width = (typeTime.tech / totalTime * 100) + "%";
-            bar.children[2].style.width = (typeTime.tac  / totalTime * 100) + "%";
-            bar.children[3].style.width = (typeTime.game / totalTime * 100) + "%";
-        } else { Array.from(bar.children).forEach(c => c.style.width = "0%"); }
-    }
-    function getTypeName(t) { const map = { phys:"フィジカル", tech:"技術", tac:"戦術", game:"ゲーム", rest:"休憩" }; return map[t] || ""; }
+function generateDummyHistory() {
+const dummy = [];
+for(let i=8; i>=1; i--) { dummy.push({ date: `過去${i}週`, summary: { phys:Math.random()*40+20, tech:Math.random()*40+20, tac:10, game:10 }}); }
+historyList = dummy; localStorage.setItem(KEY_HISTORY, JSON.stringify(historyList));
+}
 
-    function finishPractice() {
-        if(blockList.length === 0) return;
-        if(!confirm("完了して記録しますか？")) return;
-        let summary = { phys:0, tech:0, tac:0, game:0 };
-        blockList.forEach(b => { if(summary[b.type] !== undefined) summary[b.type] += b.time; });
-        historyList.push({ date: new Date().toLocaleDateString(), summary: summary });
-        localStorage.setItem(KEY_HISTORY, JSON.stringify(historyList));
-        blockList = []; saveBlocks(); alert("履歴に保存しました！");
-    }
+// --- タイムライン操作 ---
+function addBlock() {
+const title = document.getElementById('inp-title').value || "メニュー";
+const time = parseInt(document.getElementById('inp-time').value) || 15;
+const type = document.getElementById('inp-type').value;
+blockList.push({ id: Date.now(), title: title, time: time, type: type, boardData: null });
+saveBlocks();
+}
+function removeBlock(idx) { if(confirm("削除しますか？")) { blockList.splice(idx, 1); saveBlocks(); } }
+function moveBlock(idx, dir) {
+if((idx===0 && dir===-1) || (idx===blockList.length-1 && dir===1)) return;
+const temp = blockList[idx]; blockList[idx] = blockList[idx+dir]; blockList[idx+dir] = temp; saveBlocks();
+}
+function clearAllBlocks() { if(confirm("リセットしますか？")) { blockList = []; saveBlocks(); } }
 
-    // --- 分析機能 (Chart.js) ---
-    function openAnalytics() { document.getElementById('screen-analytics').style.display = 'block'; renderCharts(); }
-    function closeAnalytics() { document.getElementById('screen-analytics').style.display = 'none'; }
-    function renderCharts() {
-        const colors = { phys: '#ff4d4d', tech: '#007AFF', tac: '#28a745', game: '#ffc107', rest: '#6c757d' };
-        let shortData = { phys:0, tech:0, tac:0, game:0, rest:0 }; let total = 0;
-        blockList.forEach(b => { if(shortData[b.type]!==undefined) { shortData[b.type] += b.time; total += b.time; } });
-        
-        const ctxShort = document.getElementById('chart-short').getContext('2d');
-        if(window.shortChartInst) window.shortChartInst.destroy();
-        window.shortChartInst = new Chart(ctxShort, {
-            type: 'doughnut',
-            data: { labels: total===0?['なし']:['フィジカル','技術','戦術','ゲーム','休憩'], datasets: [{ data: total===0?[1]:[shortData.phys, shortData.tech, shortData.tac, shortData.game, shortData.rest], backgroundColor: total===0?['#444']:[colors.phys, colors.tech, colors.tac, colors.game, colors.rest], borderWidth:0 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: total!==0, position:'right', labels:{color:'white'} } } }
-        });
-        const ctxLong = document.getElementById('chart-long').getContext('2d');
-        if(window.longChartInst) window.longChartInst.destroy();
-        window.longChartInst = new Chart(ctxLong, {
-            type: 'bar',
-            data: { labels: historyList.map(h => h.date), datasets: [{ label: 'フィジカル', data: historyList.map(h=>h.summary.phys||0), backgroundColor: colors.phys }, { label: '技術', data: historyList.map(h=>h.summary.tech||0), backgroundColor: colors.tech }, { label: '戦術', data: historyList.map(h=>h.summary.tac||0), backgroundColor: colors.tac }, { label: 'ゲーム', data: historyList.map(h=>h.summary.game||0), backgroundColor: colors.game }] },
-            options: { responsive: true, maintainAspectRatio: false, scales: { x:{stacked:true, ticks:{color:'white'}}, y:{stacked:true, ticks:{color:'white'}} }, plugins: { legend:{labels:{color:'white'}}} }
-        });
-    }
-    // --- ライブラリ機能 ---
-    function openLibrary() { document.getElementById('screen-library').style.display = 'block'; renderLibraryList(); }
-    function closeLibrary() { document.getElementById('screen-library').style.display = 'none'; }
-    function saveToLibrary(idx) {
-        const block = blockList[idx]; const name = prompt("名前:", block.title); if(!name) return;
-        libraryList.push({ id: Date.now(), title: name, time: block.time, type: block.type, boardData: block.boardData });
-        localStorage.setItem(KEY_LIBRARY, JSON.stringify(libraryList)); alert("登録しました");
-    }
-    function renderLibraryList() {
-        const container = document.getElementById('library-container');
-        const keyword = document.getElementById('lib-search').value.toLowerCase();
-        const filter = document.getElementById('lib-filter').value;
-        container.innerHTML = '';
-        const filtered = libraryList.filter(i => i.title.toLowerCase().includes(keyword) && (filter==='all' || i.type===filter));
-        filtered.forEach(item => {
-            const div = document.createElement('div'); div.className = 'lib-item'; div.style.borderLeftColor = getComputedStyle(document.querySelector(`.type-${item.type}`)).backgroundColor;
-            div.innerHTML = `<div class="lib-info"><div class="lib-title">${item.title}</div><span style="color:#aaa;">${item.time}分/${getTypeName(item.type)}</span></div>
-                <div class="lib-actions"><button class="btn-use" onclick="addFromLibrary(${libraryList.indexOf(item)})">＋ 追加</button><button class="btn-del-lib" onclick="deleteFromLibrary(${libraryList.indexOf(item)})">削除</button></div>`;
-            container.appendChild(div);
-        });
-    }
-    function addFromLibrary(idx) {
-        const item = libraryList[idx];
-        blockList.push({ id: Date.now(), title: item.title, time: item.time, type: item.type, boardData: item.boardData?JSON.parse(JSON.stringify(item.boardData)):null });
-        saveBlocks(); closeLibrary(); alert("追加しました");
-    }
-    function deleteFromLibrary(idx) { if(confirm("削除しますか？")) { libraryList.splice(idx, 1); localStorage.setItem(KEY_LIBRARY, JSON.stringify(libraryList)); renderLibraryList(); } }
+function renderTimeline() {
+const container = document.getElementById('block-container');
+const bar = document.getElementById('intensity-bar');
+const totalDisplay = document.getElementById('total-time');
+container.innerHTML = '';
+let totalTime = 0; let typeTime = { phys:0, tech:0, tac:0, game:0, rest:0 };
 
-    // --- 作戦ボード (描画・操作) ---
-    const screenPlan = document.getElementById('screen-plan');
-    const screenBoard = document.getElementById('screen-board');
-    const boardTitle = document.getElementById('board-title');
-    let state = { objects: [], drawings: [], mode: 'move', isDrawing: false, recording: false, playing: false, startTime: 0, frames: [] };
-    let selectedObj = null; let dragOffset = { x:0, y:0 }; let dragStartPos = { x:0, y:0 }; let tempArrow = null; let animationId = null;
-    const svg = document.getElementById('court-svg'); const gDraw = document.getElementById('drawings'); const gObj = document.getElementById('objects');
+blockList.forEach((block, idx) => {
+totalTime += block.time;
+if(typeTime[block.type] !== undefined) typeTime[block.type] += block.time;
+const hasData = block.boardData && Object.keys(block.boardData.data).length > 0;
 
-    function openBlockBoard(idx) {
-        currentBlockIndex = idx; screenPlan.style.display = 'none'; screenBoard.style.display = 'block'; boardTitle.innerText = blockList[idx].title;
-        resetBoardState(); if(blockList[idx].boardData) loadBoardData(blockList[idx].boardData); else { addPlayer(); addPlayer(); addShuttle(); }
-        setToolMode('move');
-    }
-    function closeBoard() {
-        if(state.recording) toggleRec(); if(state.playing) stopPlay();
-        if(document.body.classList.contains('presentation-mode')) togglePresentation();
-        screenBoard.style.display = 'none'; screenPlan.style.display = 'block'; currentBlockIndex = -1; renderTimeline();
-    }
-    function setToolMode(m) {
-        state.mode = m; document.querySelectorAll('.mode-toggle').forEach(b => b.classList.remove('active'));
-        if(m === 'move') document.getElementById('btn-mode-move').classList.add('active');
-        else if(m === 'pen') document.getElementById('btn-mode-pen').classList.add('active');
-        else if(m === 'arrow-shot') document.getElementById('btn-mode-arrow-shot').classList.add('active');
-        else if(m === 'arrow-move') document.getElementById('btn-mode-arrow-move').classList.add('active');
-    }
-    function addPlayer() { state.objects.push({ id: 'p_'+Date.now(), type: 'player', x: 300+(state.objects.length*50), y: 400 }); renderObjects(); }
-    function addShuttle() { state.objects.push({ id: 's_'+Date.now(), type: 'shuttle', x: 670, y: 300 }); renderObjects(); }
-    function clearObjects() { if(confirm("全消去？")) { state.objects = []; renderObjects(); } }
-    function clearDrawings() { state.drawings = []; renderDrawings(); }
-    function renderObjects() {
-        gObj.innerHTML = '';
-        state.objects.forEach(obj => {
-            const el = document.createElementNS("http://www.w3.org/2000/svg", obj.type === 'player' ? 'circle' : 'path');
-            el.setAttribute('id', obj.id);
-            if(obj.type === 'player') { el.setAttribute('cx', obj.x); el.setAttribute('cy', obj.y); el.setAttribute('r', 20); el.setAttribute('fill', '#007AFF'); el.setAttribute('stroke', 'white'); el.setAttribute('stroke-width', '2'); }
-            else { const d = `M${obj.x},${obj.y-10} L${obj.x+10},${obj.y+10} L${obj.x-10},${obj.y+10} Z`; el.setAttribute('d', d); el.setAttribute('fill', 'white'); el.setAttribute('stroke', 'black'); }
-            gObj.appendChild(el);
-        });
-    }
-    function renderDrawings() {
-        gDraw.innerHTML = '';
-        state.drawings.forEach(d => {
-            const path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-            const data = (typeof d === 'string') ? {type:'pen',d:d} : d;
-            path.setAttribute('d', data.d);
-            if(data.type==='arrow-shot') path.setAttribute('class', 'arrow-line arrow-shot');
-            else if(data.type==='arrow-move') path.setAttribute('class', 'arrow-line arrow-move');
-            else path.setAttribute('class', 'draw-path');
-            gDraw.appendChild(path);
-        });
-        if(tempArrow) gDraw.appendChild(tempArrow);
-    }
+const div = document.createElement('div');
+div.className = `plan-block type-${block.type}`;
+div.style.borderColor = getComputedStyle(document.querySelector(`.type-${block.type}`)).backgroundColor;
+div.innerHTML = `
+               <div class="block-time">${block.time}<span style="font-size:10px">min</span></div>
+               <div class="block-info">
+                   <span class="block-title">${block.title}<span class="block-type">${getTypeName(block.type)}</span>
+                   <button class="btn-save-lib" onclick="saveToLibrary(${idx})">💾 保存</button></span>
+                   <button class="btn-board-link ${hasData ? 'has-data' : ''}" onclick="openBlockBoard(${idx})">${hasData ? '★ ボード確認' : '＋ 作戦ボード作成'}</button>
+               </div>
+               <div class="block-ctrls"><button class="btn-up" onclick="moveBlock(${idx}, -1)">▲</button><button class="btn-down" onclick="moveBlock(${idx}, 1)">▼</button><button class="btn-del" onclick="removeBlock(${idx})">×</button></div>`;
+container.appendChild(div);
+});
+totalDisplay.innerText = totalTime;
+if(totalTime > 0) {
+bar.children[0].style.width = (typeTime.phys / totalTime * 100) + "%";
+bar.children[1].style.width = (typeTime.tech / totalTime * 100) + "%";
+bar.children[2].style.width = (typeTime.tac  / totalTime * 100) + "%";
+bar.children[3].style.width = (typeTime.game / totalTime * 100) + "%";
+} else { Array.from(bar.children).forEach(c => c.style.width = "0%"); }
+}
+function getTypeName(t) { const map = { phys:"フィジカル", tech:"技術", tac:"戦術", game:"ゲーム", rest:"休憩" }; return map[t] || ""; }
 
-    // イベントリスナー (タッチ操作・描画ロジック)
-    function getEventPos(e) {
-        const pt = svg.createSVGPoint(); pt.x = e.touches ? e.touches[0].clientX : e.clientX; pt.y = e.touches ? e.touches[0].clientY : e.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse());
-    }
-    function onStart(e) {
-        if(state.playing) return; const pos = getEventPos(e); if(e.cancelable) e.preventDefault();
-        if(state.mode === 'move') {
-            let target=null, min=40; state.objects.forEach(o => { const d=Math.sqrt((o.x-pos.x)**2+(o.y-pos.y)**2); if(d<min){target=o; min=d;} });
-            if(target) { selectedObj=target; dragOffset.x=pos.x-target.x; dragOffset.y=pos.y-target.y; }
-        } else if(state.mode === 'pen') {
-            state.isDrawing=true; state.drawings.push({ type:'pen', d:`M ${pos.x} ${pos.y}` }); renderDrawings();
-        } else if(state.mode.startsWith('arrow')) {
-            state.isDrawing=true; dragStartPos=pos; tempArrow=document.createElementNS("http://www.w3.org/2000/svg",'path');
-            tempArrow.setAttribute('d',`M ${pos.x} ${pos.y} L ${pos.x} ${pos.y}`); tempArrow.setAttribute('class', `arrow-line ${state.mode}`); renderDrawings();
-        }
-    }
-    function onMove(e) {
-        if(state.playing) return; const pos = getEventPos(e);
-        if(state.mode === 'move' && selectedObj) { selectedObj.x=pos.x-dragOffset.x; selectedObj.y=pos.y-dragOffset.y; renderObjects(); }
-        else if(state.mode === 'pen' && state.isDrawing) { state.drawings[state.drawings.length-1].d += ` L ${pos.x} ${pos.y}`; renderDrawings(); }
-        else if(state.mode.startsWith('arrow') && state.isDrawing && tempArrow) { tempArrow.setAttribute('d', `M ${dragStartPos.x} ${dragStartPos.y} L ${pos.x} ${pos.y}`); }
-    }
-    function onEnd(e) {
-        if(state.mode==='move') selectedObj=null;
-        else if(state.mode==='pen') state.isDrawing=false;
-        else if(state.mode.startsWith('arrow') && state.isDrawing) {
-            state.isDrawing=false; const pos=getEventPos(e);
-            if(Math.sqrt((pos.x-dragStartPos.x)**2+(pos.y-dragStartPos.y)**2)>10) state.drawings.push({ type:state.mode, d:`M ${dragStartPos.x} ${dragStartPos.y} L ${pos.x} ${pos.y}` });
-            tempArrow=null; renderDrawings();
-        }
-    }
-    svg.addEventListener('mousedown', onStart); window.addEventListener('mousemove', onMove); window.addEventListener('mouseup', onEnd);
-    svg.addEventListener('touchstart', onStart, {passive:false}); window.addEventListener('touchmove', onMove, {passive:false}); window.addEventListener('touchend', onEnd);
-    // --- 録画・再生・プレゼン機能 ---
-    function toggleRec() {
-        if(state.recording) {
-            state.recording=false; clearInterval(animationId); document.getElementById('btn-rec').classList.remove('recording'); document.getElementById('btn-rec').innerText = "● 動きを録画"; document.getElementById('btn-play').style.display = 'inline-block'; alert(`録画完了`);
-        } else {
-            state.frames=[]; state.recording=true; state.startTime=Date.now(); document.getElementById('btn-rec').classList.add('recording'); document.getElementById('btn-rec').innerText = "■ 停止"; document.getElementById('btn-play').style.display = 'none';
-            animationId = setInterval(() => { state.frames.push({ t: Date.now()-state.startTime, objs: JSON.parse(JSON.stringify(state.objects)) }); document.getElementById('timer').innerText = (state.frames[state.frames.length-1].t/1000).toFixed(1)+"s"; }, 30);
-        }
-    }
-    function playRec() {
-        if(!state.frames.length) return; state.playing=true; const start=Date.now(); const dur=state.frames[state.frames.length-1].t;
-        function step() {
-            const now=Date.now()-start; const frame=state.frames.find(f=>f.t>=now);
-            if(frame) { state.objects=frame.objs; renderObjects(); document.getElementById('timer').innerText=(now/1000).toFixed(1)+"s"; }
-            if(now<dur) requestAnimationFrame(step); else { state.playing=false; document.getElementById('timer').innerText="End"; }
-        } step();
-    }
-    function stopPlay() { state.playing = false; }
-    function togglePresentation() { document.body.classList.toggle('presentation-mode'); }
+function finishPractice() {
+if(blockList.length === 0) return;
+if(!confirm("完了して記録しますか？")) return;
+let summary = { phys:0, tech:0, tac:0, game:0 };
+blockList.forEach(b => { if(summary[b.type] !== undefined) summary[b.type] += b.time; });
+historyList.push({ date: new Date().toLocaleDateString(), summary: summary });
+localStorage.setItem(KEY_HISTORY, JSON.stringify(historyList));
+blockList = []; saveBlocks(); alert("履歴に保存しました！");
+}
 
-    // --- ボードデータの保存・読み込み ---
-    function saveBoardData() {
-        if(currentBlockIndex===-1) return;
-        blockList[currentBlockIndex].boardData = { data: { objects: state.objects, drawings: state.drawings, frames: state.frames } };
-        saveBlocks(); alert("保存しました");
-    }
-    function loadBoardData(w) {
-        if(!w || !w.data) return; state.objects=w.data.objects||[]; 
-        state.drawings = (w.data.drawings||[]).map(d => typeof d === 'string' ? {type:'pen', d:d} : d);
-        state.frames=w.data.frames||[]; renderObjects(); renderDrawings(); document.getElementById('btn-play').style.display = state.frames.length?'inline-block':'none';
-    }
-    function resetBoardState() {
-        state = { objects:[], drawings:[], mode:'move', isDrawing:false, recording:false, playing:false, startTime:0, frames:[] }; tempArrow = null;
-        renderObjects(); renderDrawings(); document.getElementById('timer').innerText=""; document.getElementById('btn-play').style.display='none';
-    }
+// --- 分析機能 (Chart.js) ---
+function openAnalytics() { document.getElementById('screen-analytics').style.display = 'block'; renderCharts(); }
+function closeAnalytics() { document.getElementById('screen-analytics').style.display = 'none'; }
+function renderCharts() {
+const colors = { phys: '#ff4d4d', tech: '#007AFF', tac: '#28a745', game: '#ffc107', rest: '#6c757d' };
+let shortData = { phys:0, tech:0, tac:0, game:0, rest:0 }; let total = 0;
+blockList.forEach(b => { if(shortData[b.type]!==undefined) { shortData[b.type] += b.time; total += b.time; } });
 
-    // --- LINE共有機能 (テキスト・画像) 改良版 ---
-    function sharePlanText() {
-        if(blockList.length === 0) { alert("メニューがありません"); return; }
-        
-        const date = new Date().toLocaleDateString();
-        // LINEで見やすいようにヘッダーと区切り線を追加
-        let text = `🏸 練習メニュー (${date})\n`;
-        text += `⏱ 合計時間: ${document.getElementById('total-time').innerText}分\n`;
-        text += `------------------\n\n`; // 見やすい区切り
-        
-        blockList.forEach((b, i) => {
-            // 各項目の間に空行(\n\n)を入れてスッキリさせる
-            text += `■ ${i+1}. ${b.title}\n`;
-            text += `   時間: ${b.time}分\n`;
-            text += `   内容: ${getTypeName(b.type)}\n\n`;
-        });
-        
-        if (navigator.share) { navigator.share({ title: '練習メニュー', text: text }).catch(e=>{}); } 
-        else { prompt("コピー用:", text); }
-    }
-    
-    async function shareBoardImage() {
-        // プレゼンモードでボタン類を隠してから画像化
-        const wasPresentation = document.body.classList.contains('presentation-mode');
-        if(wasPresentation) togglePresentation();
-        
-        const svgEl = document.getElementById('court-svg');
-        const serializer = new XMLSerializer();
-        let source = serializer.serializeToString(svgEl);
-        source = source.replace(/xmlns="http:\/\/www\.w3\.org\/2000\/svg"/g, '');
-        source = '<svg xmlns="http://www.w3.org/2000/svg" ' + source.substring(4);
-        
-        const canvas = document.createElement('canvas'); canvas.width = 1340; canvas.height = 610;
-        const ctx = canvas.getContext('2d'); 
-        const img = new Image();
-        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(source);
-        
-        img.onload = async () => {
-            ctx.drawImage(img, 0, 0);
-            canvas.toBlob(async (blob) => {
-                if (!blob) return;
-                const file = new File([blob], "badi_tactics.png", { type: "image/png" });
-                
-                // 共有処理
-                if (navigator.share) { 
-                    try { await navigator.share({ files: [file], title: '作戦ボード' }); } catch (err) {} 
-                } else { 
-                    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "badi_tactics.png"; document.body.appendChild(a); a.click(); document.body.removeChild(a); alert("画像がダウンロードされました。LINEで送信してください。"); 
-                }
-                
-       if(wasPresentation) togglePresentation(); // 元に戻す
-            }, 'image/png');
-        };
-    }
+const ctxShort = document.getElementById('chart-short').getContext('2d');
+if(window.shortChartInst) window.shortChartInst.destroy();
+window.shortChartInst = new Chart(ctxShort, {
+type: 'doughnut',
+data: { labels: total===0?['なし']:['フィジカル','技術','戦術','ゲーム','休憩'], datasets: [{ data: total===0?[1]:[shortData.phys, shortData.tech, shortData.tac, shortData.game, shortData.rest], backgroundColor: total===0?['#444']:[colors.phys, colors.tech, colors.tac, colors.game, colors.rest], borderWidth:0 }] },
+options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: total!==0, position:'right', labels:{color:'white'} } } }
+});
+const ctxLong = document.getElementById('chart-long').getContext('2d');
+if(window.longChartInst) window.longChartInst.destroy();
+window.longChartInst = new Chart(ctxLong, {
+type: 'bar',
+data: { labels: historyList.map(h => h.date), datasets: [{ label: 'フィジカル', data: historyList.map(h=>h.summary.phys||0), backgroundColor: colors.phys }, { label: '技術', data: historyList.map(h=>h.summary.tech||0), backgroundColor: colors.tech }, { label: '戦術', data: historyList.map(h=>h.summary.tac||0), backgroundColor: colors.tac }, { label: 'ゲーム', data: historyList.map(h=>h.summary.game||0), backgroundColor: colors.game }] },
+options: { responsive: true, maintainAspectRatio: false, scales: { x:{stacked:true, ticks:{color:'white'}}, y:{stacked:true, ticks:{color:'white'}} }, plugins: { legend:{labels:{color:'white'}}} }
+});
+}
+// --- ライブラリ機能 ---
+function openLibrary() { document.getElementById('screen-library').style.display = 'block'; renderLibraryList(); }
+function closeLibrary() { document.getElementById('screen-library').style.display = 'none'; }
+function saveToLibrary(idx) {
+const block = blockList[idx]; const name = prompt("名前:", block.title); if(!name) return;
+libraryList.push({ id: Date.now(), title: name, time: block.time, type: block.type, boardData: block.boardData });
+localStorage.setItem(KEY_LIBRARY, JSON.stringify(libraryList)); alert("登録しました");
+}
+function renderLibraryList() {
+const container = document.getElementById('library-container');
+const keyword = document.getElementById('lib-search').value.toLowerCase();
+const filter = document.getElementById('lib-filter').value;
+container.innerHTML = '';
+const filtered = libraryList.filter(i => i.title.toLowerCase().includes(keyword) && (filter==='all' || i.type===filter));
+filtered.forEach(item => {
+const div = document.createElement('div'); div.className = 'lib-item'; div.style.borderLeftColor = getComputedStyle(document.querySelector(`.type-${item.type}`)).backgroundColor;
+div.innerHTML = `<div class="lib-info"><div class="lib-title">${item.title}</div><span style="color:#aaa;">${item.time}分/${getTypeName(item.type)}</span></div>
+               <div class="lib-actions"><button class="btn-use" onclick="addFromLibrary(${libraryList.indexOf(item)})">＋ 追加</button><button class="btn-del-lib" onclick="deleteFromLibrary(${libraryList.indexOf(item)})">削除</button></div>`;
+container.appendChild(div);
+});
+}
+function addFromLibrary(idx) {
+const item = libraryList[idx];
+blockList.push({ id: Date.now(), title: item.title, time: item.time, type: item.type, boardData: item.boardData?JSON.parse(JSON.stringify(item.boardData)):null });
+saveBlocks(); closeLibrary(); alert("追加しました");
+}
+function deleteFromLibrary(idx) { if(confirm("削除しますか？")) { libraryList.splice(idx, 1); localStorage.setItem(KEY_LIBRARY, JSON.stringify(libraryList)); renderLibraryList(); } }
 
-    // --- ファイル入出力 (バックアップ) ---
-    function exportData() {
-        const data = { blocks: localStorage.getItem(KEY_BLOCKS), history: localStorage.getItem(KEY_HISTORY), library: localStorage.getItem(KEY_LIBRARY) };
-        const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "badi_backup.json"; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    }
-    function importData(input) {
-        const file = input.files[0]; if(!file) return;
-        if(!confirm("上書きしますか？")) return;
-        const reader = new FileReader();
-        reader.onload = e => { try { const d = JSON.parse(e.target.result); if(d.blocks) localStorage.setItem(KEY_BLOCKS, d.blocks); if(d.history) localStorage.setItem(KEY_HISTORY, d.history); if(d.library) localStorage.setItem(KEY_LIBRARY, d.library); location.reload(); } catch(err) { alert("エラー"); } };
-        reader.readAsText(file);
-    }
+// --- 作戦ボード (描画・操作) ---
+const screenPlan = document.getElementById('screen-plan');
+const screenBoard = document.getElementById('screen-board');
+const boardTitle = document.getElementById('board-title');
+let state = { objects: [], drawings: [], mode: 'move', isDrawing: false, recording: false, playing: false, startTime: 0, frames: [] };
+let selectedObj = null; let dragOffset = { x:0, y:0 }; let dragStartPos = { x:0, y:0 }; let tempArrow = null; let animationId = null;
+const svg = document.getElementById('court-svg'); const gDraw = document.getElementById('drawings'); const gObj = document.getElementById('objects');
+
+function openBlockBoard(idx) {
+currentBlockIndex = idx; screenPlan.style.display = 'none'; screenBoard.style.display = 'block'; boardTitle.innerText = blockList[idx].title;
+resetBoardState(); if(blockList[idx].boardData) loadBoardData(blockList[idx].boardData); else { addPlayer(); addPlayer(); addShuttle(); }
+setToolMode('move');
+}
+function closeBoard() {
+if(state.recording) toggleRec(); if(state.playing) stopPlay();
+if(document.body.classList.contains('presentation-mode')) togglePresentation();
+screenBoard.style.display = 'none'; screenPlan.style.display = 'block'; currentBlockIndex = -1; renderTimeline();
+}
+function setToolMode(m) {
+state.mode = m; document.querySelectorAll('.mode-toggle').forEach(b => b.classList.remove('active'));
+if(m === 'move') document.getElementById('btn-mode-move').classList.add('active');
+else if(m === 'pen') document.getElementById('btn-mode-pen').classList.add('active');
+else if(m === 'arrow-shot') document.getElementById('btn-mode-arrow-shot').classList.add('active');
+else if(m === 'arrow-move') document.getElementById('btn-mode-arrow-move').classList.add('active');
+}
+function addPlayer() { state.objects.push({ id: 'p_'+Date.now(), type: 'player', x: 300+(state.objects.length*50), y: 400 }); renderObjects(); }
+function addShuttle() { state.objects.push({ id: 's_'+Date.now(), type: 'shuttle', x: 670, y: 300 }); renderObjects(); }
+function clearObjects() { if(confirm("全消去？")) { state.objects = []; renderObjects(); } }
+function clearDrawings() { state.drawings = []; renderDrawings(); }
+function renderObjects() {
+gObj.innerHTML = '';
+state.objects.forEach(obj => {
+const el = document.createElementNS("http://www.w3.org/2000/svg", obj.type === 'player' ? 'circle' : 'path');
+el.setAttribute('id', obj.id);
+if(obj.type === 'player') { el.setAttribute('cx', obj.x); el.setAttribute('cy', obj.y); el.setAttribute('r', 20); el.setAttribute('fill', '#007AFF'); el.setAttribute('stroke', 'white'); el.setAttribute('stroke-width', '2'); }
+else { const d = `M${obj.x},${obj.y-10} L${obj.x+10},${obj.y+10} L${obj.x-10},${obj.y+10} Z`; el.setAttribute('d', d); el.setAttribute('fill', 'white'); el.setAttribute('stroke', 'black'); }
+gObj.appendChild(el);
+});
+}
+function renderDrawings() {
+gDraw.innerHTML = '';
+state.drawings.forEach(d => {
+const path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+const data = (typeof d === 'string') ? {type:'pen',d:d} : d;
+path.setAttribute('d', data.d);
+if(data.type==='arrow-shot') path.setAttribute('class', 'arrow-line arrow-shot');
+else if(data.type==='arrow-move') path.setAttribute('class', 'arrow-line arrow-move');
+else path.setAttribute('class', 'draw-path');
+gDraw.appendChild(path);
+});
+if(tempArrow) gDraw.appendChild(tempArrow);
+}
+
+// イベントリスナー (タッチ操作・描画ロジック)
+function getEventPos(e) {
+const pt = svg.createSVGPoint(); pt.x = e.touches ? e.touches[0].clientX : e.clientX; pt.y = e.touches ? e.touches[0].clientY : e.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse());
+}
+function onStart(e) {
+if(state.playing) return; const pos = getEventPos(e); if(e.cancelable) e.preventDefault();
+if(state.mode === 'move') {
+let target=null, min=40; state.objects.forEach(o => { const d=Math.sqrt((o.x-pos.x)**2+(o.y-pos.y)**2); if(d<min){target=o; min=d;} });
+if(target) { selectedObj=target; dragOffset.x=pos.x-target.x; dragOffset.y=pos.y-target.y; }
+} else if(state.mode === 'pen') {
+state.isDrawing=true; state.drawings.push({ type:'pen', d:`M ${pos.x} ${pos.y}` }); renderDrawings();
+} else if(state.mode.startsWith('arrow')) {
+state.isDrawing=true; dragStartPos=pos; tempArrow=document.createElementNS("http://www.w3.org/2000/svg",'path');
+tempArrow.setAttribute('d',`M ${pos.x} ${pos.y} L ${pos.x} ${pos.y}`); tempArrow.setAttribute('class', `arrow-line ${state.mode}`); renderDrawings();
+}
+}
+function onMove(e) {
+if(state.playing) return; const pos = getEventPos(e);
+if(state.mode === 'move' && selectedObj) { selectedObj.x=pos.x-dragOffset.x; selectedObj.y=pos.y-dragOffset.y; renderObjects(); }
+else if(state.mode === 'pen' && state.isDrawing) { state.drawings[state.drawings.length-1].d += ` L ${pos.x} ${pos.y}`; renderDrawings(); }
+else if(state.mode.startsWith('arrow') && state.isDrawing && tempArrow) { tempArrow.setAttribute('d', `M ${dragStartPos.x} ${dragStartPos.y} L ${pos.x} ${pos.y}`); }
+}
+function onEnd(e) {
+if(state.mode==='move') selectedObj=null;
+else if(state.mode==='pen') state.isDrawing=false;
+else if(state.mode.startsWith('arrow') && state.isDrawing) {
+state.isDrawing=false; const pos=getEventPos(e);
+if(Math.sqrt((pos.x-dragStartPos.x)**2+(pos.y-dragStartPos.y)**2)>10) state.drawings.push({ type:state.mode, d:`M ${dragStartPos.x} ${dragStartPos.y} L ${pos.x} ${pos.y}` });
+tempArrow=null; renderDrawings();
+}
+}
+svg.addEventListener('mousedown', onStart); window.addEventListener('mousemove', onMove); window.addEventListener('mouseup', onEnd);
+svg.addEventListener('touchstart', onStart, {passive:false}); window.addEventListener('touchmove', onMove, {passive:false}); window.addEventListener('touchend', onEnd);
+// --- 録画・再生・プレゼン機能 ---
+function toggleRec() {
+if(state.recording) {
+state.recording=false; clearInterval(animationId); document.getElementById('btn-rec').classList.remove('recording'); document.getElementById('btn-rec').innerText = "● 動きを録画"; document.getElementById('btn-play').style.display = 'inline-block'; alert(`録画完了`);
+} else {
+state.frames=[]; state.recording=true; state.startTime=Date.now(); document.getElementById('btn-rec').classList.add('recording'); document.getElementById('btn-rec').innerText = "■ 停止"; document.getElementById('btn-play').style.display = 'none';
+animationId = setInterval(() => { state.frames.push({ t: Date.now()-state.startTime, objs: JSON.parse(JSON.stringify(state.objects)) }); document.getElementById('timer').innerText = (state.frames[state.frames.length-1].t/1000).toFixed(1)+"s"; }, 30);
+}
+}
+function playRec() {
+if(!state.frames.length) return; state.playing=true; const start=Date.now(); const dur=state.frames[state.frames.length-1].t;
+function step() {
+const now=Date.now()-start; const frame=state.frames.find(f=>f.t>=now);
+if(frame) { state.objects=frame.objs; renderObjects(); document.getElementById('timer').innerText=(now/1000).toFixed(1)+"s"; }
+if(now<dur) requestAnimationFrame(step); else { state.playing=false; document.getElementById('timer').innerText="End"; }
+} step();
+}
+function stopPlay() { state.playing = false; }
+function togglePresentation() { document.body.classList.toggle('presentation-mode'); }
+
+// --- ボードデータの保存・読み込み ---
+function saveBoardData() {
+if(currentBlockIndex===-1) return;
+blockList[currentBlockIndex].boardData = { data: { objects: state.objects, drawings: state.drawings, frames: state.frames } };
+saveBlocks(); alert("保存しました");
+}
+function loadBoardData(w) {
+if(!w || !w.data) return; state.objects=w.data.objects||[]; 
+state.drawings = (w.data.drawings||[]).map(d => typeof d === 'string' ? {type:'pen', d:d} : d);
+state.frames=w.data.frames||[]; renderObjects(); renderDrawings(); document.getElementById('btn-play').style.display = state.frames.length?'inline-block':'none';
+}
+function resetBoardState() {
+state = { objects:[], drawings:[], mode:'move', isDrawing:false, recording:false, playing:false, startTime:0, frames:[] }; tempArrow = null;
+renderObjects(); renderDrawings(); document.getElementById('timer').innerText=""; document.getElementById('btn-play').style.display='none';
+}
+
+// --- LINE共有機能 (テキスト・画像) 改良版 ---
+function sharePlanText() {
+if(blockList.length === 0) { alert("メニューがありません"); return; }
+
+const date = new Date().toLocaleDateString();
+// LINEで見やすいようにヘッダーと区切り線を追加
+let text = `🏸 練習メニュー (${date})\n`;
+text += `⏱ 合計時間: ${document.getElementById('total-time').innerText}分\n`;
+text += `------------------\n\n`; // 見やすい区切り
+
+blockList.forEach((b, i) => {
+// 各項目の間に空行(\n\n)を入れてスッキリさせる
+text += `■ ${i+1}. ${b.title}\n`;
+text += `   時間: ${b.time}分\n`;
+text += `   内容: ${getTypeName(b.type)}\n\n`;
+});
+
+if (navigator.share) { navigator.share({ title: '練習メニュー', text: text }).catch(e=>{}); } 
+else { prompt("コピー用:", text); }
+}
+
+async function shareBoardImage() {
+// プレゼンモードでボタン類を隠してから画像化
+const wasPresentation = document.body.classList.contains('presentation-mode');
+if(wasPresentation) togglePresentation();
+
+const svgEl = document.getElementById('court-svg');
+const serializer = new XMLSerializer();
+let source = serializer.serializeToString(svgEl);
+source = source.replace(/xmlns="http:\/\/www\.w3\.org\/2000\/svg"/g, '');
+source = '<svg xmlns="http://www.w3.org/2000/svg" ' + source.substring(4);
+
+const canvas = document.createElement('canvas'); canvas.width = 1340; canvas.height = 610;
+const ctx = canvas.getContext('2d'); 
+const img = new Image();
+img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(source);
+
+img.onload = async () => {
+ctx.drawImage(img, 0, 0);
+canvas.toBlob(async (blob) => {
+if (!blob) return;
+const file = new File([blob], "badi_tactics.png", { type: "image/png" });
+
+// 共有処理
+if (navigator.share) { 
+try { await navigator.share({ files: [file], title: '作戦ボード' }); } catch (err) {} 
+} else { 
+const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "badi_tactics.png"; document.body.appendChild(a); a.click(); document.body.removeChild(a); alert("画像がダウンロードされました。LINEで送信してください。"); 
+}
+
+if(wasPresentation) togglePresentation(); // 元に戻す
+}, 'image/png');
+};
+}
+
+// --- ファイル入出力 (バックアップ) ---
+function exportData() {
+const data = { blocks: localStorage.getItem(KEY_BLOCKS), history: localStorage.getItem(KEY_HISTORY), library: localStorage.getItem(KEY_LIBRARY) };
+const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
+const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "badi_backup.json"; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function importData(input) {
+const file = input.files[0]; if(!file) return;
+if(!confirm("上書きしますか？")) return;
+const reader = new FileReader();
+reader.onload = e => { try { const d = JSON.parse(e.target.result); if(d.blocks) localStorage.setItem(KEY_BLOCKS, d.blocks); if(d.history) localStorage.setItem(KEY_HISTORY, d.history); if(d.library) localStorage.setItem(KEY_LIBRARY, d.library); location.reload(); } catch(err) { alert("エラー"); } };
+reader.readAsText(file);
+}
 </script>
 </body>
 </html>
